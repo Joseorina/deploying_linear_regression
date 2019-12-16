@@ -39,6 +39,17 @@ price_pipe = Pipeline(
          pp.TemporalVariablesEstimator(
              variables=TEMPORAL_VARS,
              reference_variable=TEMPORAL_VARS)),
-        ('rare_label_encoder')
+        ('rare_label_encoder',
+         pp.RareLabelCategoricalEncoder(
+             tol=0.01,
+             variables=CATEGORICAL_VARS)),
+        ('categorical_encoder',
+         pp.CategoricalEncoder(variables=CATEGORICAL_VARS))
+        ('log_transformer',
+         pp.LogTransformer(variables=NUMERICALS_LOG_VARS)),
+        ('drop_features',
+         pp.DropUnecessaryFeatures(variables_to_drop=DROP_FEATURES)),
+        ('scaler', MinMaxScaler()),
+        ('Linear_model', Lasso(alpha=0.005, random_state=0))
     ]
 )
