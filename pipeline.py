@@ -1,4 +1,7 @@
 from sklearn.pipeline import Pipeline
+from sklearn.linear_model import Lasso
+from sklearn.preprocessing import MinMaxScaler
+
 import  prepocessors as pp
 
 CATEGORICAL_VARS = ['MSZoning',
