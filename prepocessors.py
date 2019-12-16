@@ -121,5 +121,18 @@ class CategoricalEncoder(BaseEstimator, TransformerMixin):
         
         # persist tranforming dictionary(save to dictionary)
         self.encoder_dict_ = {}
-                                
+        
+        for var in self.variables:
+            t = temp.groupby([var])['target'].mean().sort_values(
+                ascending=True).index
+            self.encoder_dict_[var] = {k: i for i, k in enumerate(t, 0)}
+        
+        return self
     
+    def transform(self, X):
+        # encode lables
+        X = X.copy()
+        for feature in self.variables:
+            X[feature] = X[feature].map(self.encoder_dict_[feature])
+        
+        # check if the tranformer introducees NaN            
