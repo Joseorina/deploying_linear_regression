@@ -24,7 +24,7 @@ FEATURES = ['MSSubClass', 'MSZoning', 'Neighborhood', 'OverallQual',
             # this variable is only to calculate temporal variable:
             'YrSold']
 
-def save_pipeline() -> None:
+def save_pipeline(*, pipeline_to_persist) -> None:
     """
     persist the pipeline
     """
@@ -49,10 +49,10 @@ def run_training() -> None:
         random_state = 0)
     
     # transform the target
-    y_train = log(y_train)
-    y_test = log(y_test)
+    y_train = np.log(y_train)
+    y_test = np.log(y_test)
     
-    pipeline.price_pipe(X_train[FEATURES],
+    pipeline.price_pipe.fit(X_train[FEATURES],
                         y_train)
     
     save_pipeline(pipeline_to_persist=pipeline.price_pipe)
