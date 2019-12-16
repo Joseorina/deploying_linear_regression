@@ -56,7 +56,10 @@ class NumericalImputer(BaseEstimator, TransformerMixin):
             X[feature].fillna(self.imputer_dict_[feature], inpace=True)
         return X
 
-class TempralVariablesEstimator(self, X):
+class TemporalVariablesEstimator(self, X):
+    """
+    temporal variables calculator
+    """
     def __init__(self, variables=None, reference_variable=None):
         if not isinstance(variables, list):
             self.variables = [variables]
@@ -106,4 +109,17 @@ class CategoricalEncoder(BaseEstimator, TransformerMixin):
     """
     string to number categorical encoder
     """
+    def __init__(self, variables=None):
+        if not isinstance(variables, list):
+            self.variable = [variables]
+        else:
+            self.variables = variables
+    
+    def fit(self, X, y):
+        temp = pd.concat([X, y], axis=1)
+        temp.columns = list(X.columns) + ['target']
+        
+        # persist tranforming dictionary(save to dictionary)
+        self.encoder_dict_ = {}
+                                
     
