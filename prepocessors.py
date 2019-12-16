@@ -15,13 +15,13 @@ class CategoricalImputer(BaseEstimator, TransformerMixin):
         else:
             self.variables = variables
     
-    def fit(self, X:DataFrame, y:pd.Series = None) -> 'CategoricalImputre':
+    def fit(self, X: pd.DataFrame, y:pd.Series = None) -> 'CategoricalImputre':
         """
         Fit statement to accomodate sklearn pipeline
         """
         return self
     
-    def transform(self, X:pd.Dataframe) -> pd.DataFrame:
+    def transform(self, X:pd.DataFrame) -> pd.DataFrame:
         """
         Apply transformations to the dataframe
         """
