@@ -135,4 +135,18 @@ class CategoricalEncoder(BaseEstimator, TransformerMixin):
         for feature in self.variables:
             X[feature] = X[feature].map(self.encoder_dict_[feature])
         
-        # check if the tranformer introducees NaN            
+        # check if the tranformer introducees NaN
+        if X[self.variables].isnull().any().any():
+            null_counts = X[self.variables].isnull().any()
+            vars_ = {key: value for (key, value) in null_counts.items()
+                     if value is True}
+            raise ValueError(
+                f'Categorical encoder has introduce Nan when '
+                f'transforming categorical variables: {vars_.keys()}'    
+            )
+            
+        return X
+    
+class LogTransformer(BaseEstimator, TransformerMixin):
+    pass                
+                    
