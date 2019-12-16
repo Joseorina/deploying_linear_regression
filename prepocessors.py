@@ -159,4 +159,21 @@ class LogTransformer(BaseEstimator, TransformerMixin):
             self.variables = variables
             
     def fit(self, X, y=None):
-                    
+        # to accomodate the pipeline
+        return self
+    
+    def transform(self, X):
+        X = X.copy()
+        
+        # check that the values are non-negative for log transform
+        if not (X[self.variables] >0).all().all():
+            vars_ = self.variables[(X[self.variables] <= 0).any()]
+            raise ValueError(
+                f'Variables contain zero or negatice values, '
+                f'cant apply log for vars: {vars_}')
+            
+        for feature in self.variables:
+            X[feature] = np.log(X[feature])
+            
+        return X                        
+            
