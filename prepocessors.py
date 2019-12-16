@@ -148,5 +148,15 @@ class CategoricalEncoder(BaseEstimator, TransformerMixin):
         return X
     
 class LogTransformer(BaseEstimator, TransformerMixin):
-    pass                
+    """
+    logarithm transformer
+    """
+    
+    def __init__(self, variables=None):
+        if not isinstance(variables, list):
+            self.variables = [variables]
+        else:
+            self.variables = variables
+            
+    def fit(self, X, y=None):
                     
