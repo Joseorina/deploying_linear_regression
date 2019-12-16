@@ -44,7 +44,7 @@ price_pipe = Pipeline(
              tol=0.01,
              variables=CATEGORICAL_VARS)),
         ('categorical_encoder',
-         pp.CategoricalEncoder(variables=CATEGORICAL_VARS))
+         pp.CategoricalEncoder(variables=CATEGORICAL_VARS)),
         ('log_transformer',
          pp.LogTransformer(variables=NUMERICALS_LOG_VARS)),
         ('drop_features',
