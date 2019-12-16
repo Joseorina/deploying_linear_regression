@@ -4,25 +4,41 @@ from sklearn.preprocessing import MinMaxScaler
 
 import  prepocessors as pp
 
-CATEGORICAL_VARS = ['MSZoning',
-                    'Neighborhood',
-                    'RoofStyle',
-                    'MasVnrType',
-                    'BsmtQual',
-                    'BsmtExposure',
-                    'HeatingQC',
-                    'CentralAir',
-                    'KitchenQual',
-                    'FireplaceQu',
-                    'GarageType',
-                    'GarageFinish',
-                    'PavedDrive']
+# categorical variables with NA in train set
+CATEGORICAL_VARS_WITH_NA = [
+    'MasVnrType', 'BsmtQual', 'BsmtExposure',
+    'FireplaceQu', 'GarageType', 'GarageFinish'
+]
 
-PIPELINE_NAME = 'lasso_regression'
+TEMPORAL_VARS = 'YearRemodAdd'
+
+## this variable is to calculate the temporal variable,
+## can be droped afterwards
+
+DROP_FEATURES = 'YrSold'
+
+# variables to log transform
+NUMERICALS_LOG_VARS = ['LotFrontage', '1stFlrSF', 'GrLivArea']
+
+# numerival variables with NA in training set
+NUMERICAL_VARS_WITH_NA = ['LotFrontage']
+
+# categorical variables to encode
+CATEGORICAL_VARS = ['MSZoning', 'Neighborhood', 'RoofStyle', 'MasVnrType',
+                    'BsmtQual', 'BsmtExposure', 'HeatingQC', 'CentralAir',
+                    'KitchenQual', 'FireplaceQu', 'GarageType', 'GarageFinish',
+                    'PavedDrive']
 
 price_pipe = Pipeline(
     [
         ('categorical_imputer',
          pp.CategoricalImputer(variables = CATEGORICAL_VARS)),
+        ('numerical_imputer',
+         pp.NumericalImputer(variables=NUMERICAL_VARS_WITH_NA)),
+        ('temporal_variable',
+         pp.TemporalVariablesEstimator(
+             variables=TEMPORAL_VARS,
+             reference_variable=TEMPORAL_VARS)),
+        ('rare_label_encoder')
     ]
 )
