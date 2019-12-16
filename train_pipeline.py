@@ -28,10 +28,34 @@ def save_pipeline() -> None:
     """
     persist the pipeline
     """
-    pass
+    save_file_name = 'regression_model.pkl'
+    save_path = TRAINED_MODEL_DIR / save_file_name
+    joblib.dump(pipeline_to_persist, save_path)
+    
+    print('saved pipeline')
 
 def run_training() -> None:
-    print('Training ... ')
+    """
+    Train the model
+    """
+    # read trainig data
+    data = pd.read_csv(TRAINING_DATA_FILE)
+    
+    # divide train and test set
+    X_train, X_test, y_train, y_test = train_test_split(
+        data[FEATURES],
+        data[TARGET],
+        test_size = 0.1,
+        random_state = 0)
+    
+    # transform the target
+    y_train = log(y_train)
+    y_test = log(y_test)
+    
+    pipeline.price_pipe(X_train[FEATURES],
+                        y_train)
+    
+    save_pipeline(pipeline_to_persist=pipeline.price_pipe)
     
 if __name__ == "__main__":
     run_training()    
